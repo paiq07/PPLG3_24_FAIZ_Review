@@ -3,8 +3,8 @@ const router = express.Router();
 const db = require('../Config/db');
 
 // Get all categories
-router.get('/', (req, res) => {
-  db.query('SELECT * FROM kategori', (err, results) => {
+router.get('/categories', (req, res) => {
+  db.query('SELECT * FROM categories', (err, results) => {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {
@@ -14,13 +14,13 @@ router.get('/', (req, res) => {
 });
 
 // Add a new category
-router.post('/', (req, res) => {
+router.post('/categories', (req, res) => {
   const { name } = req.body;
   if (!name) {
     return res.status(400).json({ error: 'Name is required' });
   }
 
-  db.query('INSERT INTO kategori (name) VALUES (?)', [name], (err, results) => {
+  db.query('INSERT INTO categories (name) VALUES (?)', [name], (err, results) => {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {
@@ -29,7 +29,7 @@ router.post('/', (req, res) => {
   });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/categories/:id', (req, res) => {
   const { name } = req.body;
   const { id } = req.params;
 
@@ -37,7 +37,7 @@ router.put('/:id', (req, res) => {
     return res.status(400).json({ error: 'Name is required' });
   }
 
-  db.query('UPDATE kategori SET name = ? WHERE id = ?', [name, id], (err, results) => {
+  db.query('UPDATE categories SET name = ? WHERE id = ?', [name, id], (err, results) => {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {
@@ -46,10 +46,10 @@ router.put('/:id', (req, res) => {
   });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/categories/:id', (req, res) => {
   const { id } = req.params;
 
-  db.query('DELETE FROM kategori WHERE id = ?', [id], (err, results) => {
+  db.query('DELETE FROM categories WHERE id = ?', [id], (err, results) => {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {
