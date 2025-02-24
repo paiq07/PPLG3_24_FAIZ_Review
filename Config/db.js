@@ -1,20 +1,14 @@
-const mysql = require("mysql"); // Import modul MySQL untuk Node.js
+const mysql = require("mysql2/promise"); // Use promise-based MySQL2
 
-// Membuat koneksi ke database MySQL
-const db = mysql.createConnection({
-    host: "127.0.0.1",  // Alamat host database (sesuaikan jika menggunakan server lain)
-    user: "root",       // Nama pengguna MySQL (gantilah jika menggunakan user lain)
-    password: "",       // Password MySQL (kosong jika tidak ada password)
-    database: "book"    // Nama database yang digunakan
+// Create a connection pool instead of a single connection
+const dbPool = mysql.createPool({
+    host: "127.0.0.1",
+    user: "root",
+    password: "",
+    database: "perpustakaan",
+    waitForConnections: true,
+    connectionLimit: 10, // Adjust as needed
+    queueLimit: 0
 });
 
-// Menghubungkan ke database
-db.connect((err) => {
-    if (err) {
-        console.error("Koneksi ke database gagal: " + err.message); // Menampilkan pesan error jika koneksi gagal
-        return;
-    }
-    console.log("Terhubung ke database MySQL"); // Pesan sukses jika koneksi berhasil
-});
-
-module.exports = db; // Mengekspor koneksi database agar bisa digunakan di file lain
+module.exports = dbPool; // Export the pool for use in other files
